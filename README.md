@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/49621939/how-to-watch-for-changes-to-specific-fields-in-mongodb-change-stream
