@@ -39,14 +39,14 @@ const server = App.listen(process.env.PORT || 4000, () => {
 console.log(origin);
 var IO = Socket(server, {
   cors: {
-    origin: origin,
+    origin: "*",
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
 
 IO.on("error", (err) => {
-  console.log(error);
+  console.log(err);
 });
 
 IO.on("connection", (socket) => {
