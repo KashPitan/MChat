@@ -5,22 +5,21 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 const Chat = require("./schema/chatSchema");
-// const Message = require('./schema/messageSchema');
 
 const chatRoutes = require("./routes/chatRoutes");
 
 dotenv.config();
-// console.log(process.env.PORT);
 
 const URI = process.env.MONGO_URI;
-// console.log(URI);
 
 const App = express();
+let origin = "http://localhost:3000";
 
 App.use(cors());
 App.use(express.json());
 
 if (process.env.NODE_ENV === "production") {
+  origin = "https://mstream-chat.herokuapp.com";
   App.use(express.static("client/build"));
 
   App.get("*", (req, res) => {
@@ -40,7 +39,7 @@ App.use("/chat", chatRoutes);
 
 var IO = Socket(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: origin,
     methods: ["GET", "POST"],
     credentials: true,
   },
