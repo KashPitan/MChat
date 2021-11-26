@@ -1,46 +1,55 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const UsernameInputScreen: FC = (): JSX.Element => {
+  const [usernameInput, setUsernameInput] = useState<string>("");
+  const navigate = useNavigate();
 
- const UsernameInputScreen: FC = (): JSX.Element => {
-   const [usernameInput, setUsernameInput] = useState<string>('');
-   const navigate = useNavigate();
+  const usernameInputChangeHandler = (e: any) => {
+    setUsernameInput(e.target.value);
+  };
 
-   const usernameInputChangeHandler = (e: any) => {
-      setUsernameInput(e.target.value)
-   };
-
-   const enterChatButtonHandler = async () => {
-      navigate(`/chat/${usernameInput}`);
-   }
+  const enterChatButtonHandler = async () => {
+    navigate(`/chat/${usernameInput}`);
+  };
 
   return (
     <>
-      <form className="col s12">
+      {/* <div
+        className="col s12 valign-wrapper"
+        style={{ height: "100vh", width: "100vh" }}
+      > */}
+      <form className="col s12 center-align">
         <div className="row">
-          <div className="input-field col s12">
-            <textarea
-              id='usernameInput'
-              className="materialize-textarea"
-              placeholder='enter username'
-              value={usernameInput}
-              onChange={usernameInputChangeHandler}
-              ></textarea>
+          <div
+            className="input-field col s4 offset-s4 valign-wrapper"
+            style={{ height: "100vh", width: "100vh" }}
+          >
+            <div className="row">
+              <input
+                id="usernameInput"
+                className="validate"
+                placeholder="enter username"
+                value={usernameInput}
+                onChange={usernameInputChangeHandler}
+                style={{ fontSize: "50px" }}
+                type="text"
+              />
+              <button
+                className="btn waves-effect waves-light"
+                type="submit"
+                name="action"
+                onSubmit={enterChatButtonHandler}
+                onClick={enterChatButtonHandler}
+              >
+                <i className="material-icons right">Enter Chat</i>
+              </button>
+            </div>
           </div>
         </div>
-
-        <button 
-          className="btn waves-effect waves-light"
-          type="submit"
-          name="action"
-          onSubmit={enterChatButtonHandler}
-          onClick={enterChatButtonHandler}>
-            Send
-          <i className="material-icons right">Enter Chat</i>
-        </button>
       </form>
     </>
-  )
-}
+  );
+};
 
 export default UsernameInputScreen;
