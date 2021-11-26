@@ -17,6 +17,7 @@ let origin = "http://localhost:3000";
 
 App.use(cors());
 App.use(express.json());
+App.use("/chat", chatRoutes);
 
 if (process.env.NODE_ENV === "production") {
   origin = "https://mstream-chat.herokuapp.com";
@@ -34,8 +35,6 @@ const server = App.listen(process.env.PORT || 4000, () => {
     console.log("listening on port 4000");
   }
 });
-
-App.use("/chat", chatRoutes);
 
 console.log(origin);
 var IO = Socket(server, {
