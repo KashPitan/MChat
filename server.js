@@ -37,12 +37,17 @@ const server = App.listen(process.env.PORT || 4000, () => {
 
 App.use("/chat", chatRoutes);
 
+console.log(origin);
 var IO = Socket(server, {
   cors: {
     origin: origin,
     methods: ["GET", "POST"],
     credentials: true,
   },
+});
+
+IO.on("error", (err) => {
+  console.log(error);
 });
 
 IO.on("connection", (socket) => {
