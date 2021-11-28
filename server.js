@@ -13,14 +13,16 @@ dotenv.config();
 const URI = process.env.MONGO_URI;
 
 const App = express();
-let origin = "http://localhost:3000";
+let origin =
+  process.env.NODE_ENV === "production"
+    ? "https://mstream-chat.herokuapp.com"
+    : "http://localhost:3000";
 
-App.use(cors());
+App.use(cors({ origin: [origin], credentials: true }));
 App.use(express.json());
 App.use("/chat", chatRoutes);
 
 if (process.env.NODE_ENV === "production") {
-  origin = "https://mstream-chat.herokuapp.com";
   App.use(express.static("client/build"));
 
   App.get("*", (req, res) => {

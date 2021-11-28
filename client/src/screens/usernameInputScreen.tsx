@@ -28,7 +28,7 @@ const UsernameInputScreen: FC = (): JSX.Element => {
             <div className="row">
               <input
                 id="usernameInput"
-                className="validate"
+                className="validate center-align"
                 placeholder="enter username"
                 value={usernameInput}
                 onChange={usernameInputChangeHandler}
