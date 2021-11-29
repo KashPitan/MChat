@@ -18,7 +18,7 @@ let origin =
     ? "https://mstream-chat.herokuapp.com"
     : "http://localhost:3000";
 
-App.use(cors({ origin: [origin], credentials: true }));
+App.use(cors({ origin: origin, credentials: true }));
 App.use(express.json());
 App.use("/chat", chatRoutes);
 
