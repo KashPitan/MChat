@@ -19,6 +19,14 @@ let origin =
     : "http://localhost:3000";
 
 App.use(cors({ origin: origin, credentials: true }));
+App.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 App.use(express.json());
 App.use("/chat", chatRoutes);
 
@@ -41,7 +49,7 @@ const server = App.listen(process.env.PORT || 4000, () => {
 console.log(origin);
 var IO = Socket(server, {
   cors: {
-    origin: "*",
+    origin: origin,
     methods: ["GET", "POST"],
     credentials: true,
   },
