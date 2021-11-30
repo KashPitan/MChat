@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const Socket = require("socket.io");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const path = require("path");
 
 const Chat = require("./schema/chatSchema");
 
