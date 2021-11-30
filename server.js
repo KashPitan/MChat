@@ -43,6 +43,7 @@ const server = App.listen(process.env.PORT || 4000, () => {
     console.log(process.env.PORT);
   } else {
     console.log("listening on port 4000");
+    console.log(server.address().address);
   }
 });
 
