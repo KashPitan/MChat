@@ -19,7 +19,7 @@ let origin =
     ? "https://mstream-chat.herokuapp.com"
     : "http://localhost:3000";
 
-App.use(cors({ origin: origin, credentials: true }));
+App.use(cors({ origin: "http://localhost:3000", credentials: true }));
 App.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -52,7 +52,7 @@ const server = App.listen(process.env.PORT || 4000, () => {
 console.log(origin);
 var IO = Socket(server, {
   cors: {
-    origin: "https://mstream-chat.herokuapp.com",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
     credentials: true,
   },
