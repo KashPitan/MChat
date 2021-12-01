@@ -32,6 +32,7 @@ App.use(express.json());
 App.use("/chat", chatRoutes);
 
 if (process.env.NODE_ENV === "production") {
+  console.log("im in production mode");
   App.use(express.static("client/build"));
 
   App.get("*", (req, res) => {
@@ -51,7 +52,7 @@ const server = App.listen(process.env.PORT || 4000, () => {
 console.log(origin);
 var IO = Socket(server, {
   cors: {
-    origin: origin,
+    origin: "https://mstream-chat.herokuapp.com",
     methods: ["GET", "POST"],
     credentials: true,
   },
