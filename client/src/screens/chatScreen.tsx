@@ -20,7 +20,10 @@ const ChatScreen: FC = (): JSX.Element => {
       ? "http://localhost:4000"
       : "https://mstream-chat-dev.herokuapp.com";
 
+  console.log(requestAddressBaseUrl);
+
   useEffect(() => {
+    console.log(process.env.NODE_ENV);
     setUsernameState(username ? username : "username not set");
     const socket = io(requestAddressBaseUrl, {
       withCredentials: true,
