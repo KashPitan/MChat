@@ -14,14 +14,12 @@ dotenv.config();
 const URI = process.env.MONGO_URI;
 
 const App = express();
-// let origin =
-//   process.env.NODE_ENV === "production"
-//     ? "https://mstream-chat.herokuapp.com"
-//     : "http://localhost:3000";
+let origin =
+  process.env.NODE_ENV === "production"
+    ? "https://mstream-chat.herokuapp.com"
+    : "http://localhost:3000";
 
-App.use(
-  cors({ origin: "https://mstream-chat-dev.herokuapp.com", credentials: true })
-);
+App.use(cors({ origin: origin, credentials: true }));
 App.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -51,10 +49,11 @@ const server = App.listen(process.env.PORT || 4000, () => {
   }
 });
 
-// console.log(origin);
+console.log(origin);
+//https://mstream-chat.herokuapp.com
 var IO = Socket(server, {
   cors: {
-    origin: "https://mstream-chat-dev.herokuapp.com",
+    origin: origin,
     methods: ["GET", "POST"],
     credentials: true,
   },

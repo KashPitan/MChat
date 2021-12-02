@@ -17,8 +17,13 @@ const ChatScreen: FC = (): JSX.Element => {
   const { username } = useParams();
   const requestAddressBaseUrl =
     process.env.NODE_ENV === "production"
-      ? "http://localhost:4000"
-      : "https://mstream-chat-dev.herokuapp.com";
+      ? "https://mstream-chat-dev.herokuapp.com"
+      : "http://localhost:4000";
+
+  // const requestAddressBaseUrl =
+  //   process.env.NODE_ENV === "production"
+  //     ? "http://localhost:400dada0"
+  //     : "https://mstream-chat-dev.herdadokuapp.com";
 
   console.log(requestAddressBaseUrl);
 
