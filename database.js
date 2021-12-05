@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Chat = require("./schema/chatSchema");
+const Chat = require("./schema/chatSchema").ChatModel;
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -47,19 +47,22 @@ module.exports = class database {
         "change",
         (data) => {
           const lengthOfMessageArray = data.fullDocument.messages.length;
-          const messageArray =
+          const messageAddedToArray =
             data.fullDocument.messages[lengthOfMessageArray - 1];
-          console.log("data.fullDocument.messages ==> ", messageArray);
-          console.log(new Date(), data.updateDescription.updatedFields);
+          // console.log("data.fullDocument.messages ==> ", messageAddedToArray);
 
-          socket.emit("message", messageArray);
+          const messageToEmit = {
+            message: messageAddedToArray.message,
+            sender: messageAddedToArray.sender,
+          };
+          console.log(messageToEmit);
+          // console.log(new Date(), data.updateDescription.updatedFields);
+
+          socket.emit("message", messageToEmit);
         }
       );
 
-      // Insert a doc, will trigger the change stream handler above
-      // console.log(new Date(), 'Inserting doc');
-      // await Chat.create({ name: 'Main' });
+      // await Chat.create({ name: "Main" });
     });
   };
 };
-// module.exports = { connect, openStreamListener };

@@ -13,8 +13,14 @@ const initialiseSocket = (server, origin) => {
     console.log(err);
   });
 
+  //listeners for only when the user is connected
   IO.on("connection", (socket) => {
     console.log(`socket connection made ${socket.id}`);
+
+    const queryParams = socket.handshake.query;
+    const { username } = queryParams;
+    socket.data.username = username;
+    console.log(username);
 
     IO.on("disconnect", () => {
       console.log(`disconnected ${socket.id}`);

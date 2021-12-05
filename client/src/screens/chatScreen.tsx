@@ -6,10 +6,16 @@ import { io } from "socket.io-client";
 // import '../App.css';
 import "materialize-css/dist/css/materialize.min.css";
 
+import { messageType } from "../types";
+
 import MessageList from "../components/MessageList";
+import JoinChat from "../components/JoinChat";
 
 const ChatScreen: FC = (): JSX.Element => {
-  const [messages, setMessages] = useState<string[]>([]);
+  //maybe make this into one state object
+  const [socket, setSocket] = useState<any>(null); //give this a proper socket typing later
+  const [joined, setJoined] = useState(false);
+  const [messages, setMessages] = useState<messageType[]>([]);
   const [messageInput, setMessageInput] = useState<string>("");
   const [usernameState, setUsernameState] =
     useState<string>("username not set");
@@ -20,29 +26,41 @@ const ChatScreen: FC = (): JSX.Element => {
       ? "https://mstream-chat-dev.herokuapp.com"
       : "http://localhost:4000";
 
-  // const requestAddressBaseUrl =
-  //   process.env.NODE_ENV === "production"
-  //     ? "http://localhost:400dada0"
-  //     : "https://mstream-chat-dev.herdadokuapp.com";
-
   console.log(requestAddressBaseUrl);
 
   useEffect(() => {
-    console.log(process.env.NODE_ENV);
     setUsernameState(username ? username : "username not set");
-    const socket = io(requestAddressBaseUrl, {
-      withCredentials: true,
-    });
-    socket.on("message", (data: string) => {
-      console.log(data);
-      setMessages((prevState) => [...prevState, data]);
-    });
 
     //helps prevent duplicate websocket events by closing websocket when done
     return () => {
       socket.close();
     };
   }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("message", (data: messageType) => {
+        console.log(data);
+        setMessages((prevState) => [...prevState, data]);
+      });
+    }
+  }, [socket]);
+
+  const joinChatButtonHandler = async (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setSocket(
+      io(requestAddressBaseUrl, {
+        withCredentials: true,
+        query: {
+          username: usernameState,
+        },
+      })
+    );
+
+    setJoined(true);
+  };
 
   const sendButtonHandler = async (e: any) => {
     e.preventDefault();
@@ -53,6 +71,7 @@ const ChatScreen: FC = (): JSX.Element => {
         requestAddressBaseUrl + "/chat/message",
         {
           message: messageInput,
+          username: usernameState,
         },
         {
           headers: {
@@ -72,38 +91,44 @@ const ChatScreen: FC = (): JSX.Element => {
 
   return (
     <>
-      <div className="row">
-        <h1>{usernameState}</h1>
-        <MessageList messages={messages}></MessageList>
-        {/* {messages.map((message: string) => {
-          return <h1>{message}</h1>
-        })} */}
-
-        <form className="col s12">
+      {joined ? (
+        <>
           <div className="row">
-            <div className="input-field col s12">
-              <textarea
-                id="messageInput"
-                className="materialize-textarea"
-                placeholder="enter message"
-                value={messageInput}
-                onChange={messageBoxChangeHandler}
-              ></textarea>
-            </div>
-          </div>
+            <h1>{usernameState}</h1>
+            <MessageList messages={messages}></MessageList>
 
-          <button
-            className="btn waves-effect waves-light"
-            type="submit"
-            name="action"
-            onSubmit={sendButtonHandler}
-            onClick={sendButtonHandler}
-          >
-            Send
-            <i className="material-icons right">send</i>
-          </button>
-        </form>
-      </div>
+            <form className="col s12">
+              <div className="row">
+                <div className="input-field col s12">
+                  <textarea
+                    id="messageInput"
+                    className="materialize-textarea"
+                    placeholder="enter message"
+                    value={messageInput}
+                    onChange={messageBoxChangeHandler}
+                  ></textarea>
+                </div>
+              </div>
+
+              <button
+                className="btn waves-effect waves-light"
+                type="submit"
+                name="action"
+                onSubmit={sendButtonHandler}
+                onClick={sendButtonHandler}
+              >
+                Send
+                <i className="material-icons right">send</i>
+              </button>
+            </form>
+          </div>
+        </>
+      ) : (
+        <JoinChat
+          enterChatButtonHandler={joinChatButtonHandler}
+          username={usernameState}
+        />
+      )}
     </>
   );
 };

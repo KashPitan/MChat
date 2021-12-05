@@ -1,19 +1,25 @@
 const Express = require("express");
 const Router = Express.Router();
 
-const Chat = require("../schema/chatSchema");
-const Message = require("../schema/messageSchema");
+const Chat = require("../schema/chatSchema").ChatModel;
+const Message = require("../schema/chatSchema").MessageModel;
 
 //route to send message
 Router.post("/message", async (req, res, next) => {
-  const { message } = req.body;
-  console.log("message ==> ", message);
+  const { message, username } = req.body;
 
   try {
     const chat = await Chat.find({ name: "Main" });
-    // if(chat) chat.messages.push(req.body);
-    if (chat)
-      await Chat.updateOne({ name: "Main" }, { $push: { messages: message } });
+    if (chat) {
+      const newMessageDocument = await Message.create({
+        message,
+        sender: username,
+      });
+      await Chat.updateOne(
+        { name: "Main" },
+        { $push: { messages: newMessageDocument } }
+      );
+    }
     if (chat) console.log(chat);
   } catch (error) {
     console.log("error ==> ", error);

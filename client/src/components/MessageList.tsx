@@ -1,17 +1,18 @@
 import React, { FC } from "react";
-// import TodoItem from "./TodoItem";
-// import { v4 as uuidv4 } from "uuid";
-import MessageItem from './MessageItem';
+import MessageItem from "./MessageItem";
+import { messageType } from "../types";
 
-const MessageList: FC<{messages:string[]}> = ({messages}): JSX.Element => {
+const MessageList: FC<{ messages: messageType[] }> = ({
+  messages,
+}): JSX.Element => {
   return (
     <>
       <h1>Messages</h1>
       {messages.length > 0 ? (
         <>
           <ol className="collection">
-            {messages.map((message: string, index: number) => (
-              <MessageItem key={index.toString()} message={message}/>
+            {messages.map((message: messageType, index: number) => (
+              <MessageItem key={index.toString()} message={message} />
             ))}
           </ol>
         </>

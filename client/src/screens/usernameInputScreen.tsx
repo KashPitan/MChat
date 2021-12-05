@@ -15,10 +15,6 @@ const UsernameInputScreen: FC = (): JSX.Element => {
 
   return (
     <>
-      {/* <div
-        className="col s12 valign-wrapper"
-        style={{ height: "100vh", width: "100vh" }}
-      > */}
       <form className="col s12 center-align">
         <div className="row">
           <div
@@ -42,7 +38,7 @@ const UsernameInputScreen: FC = (): JSX.Element => {
                 onSubmit={enterChatButtonHandler}
                 onClick={enterChatButtonHandler}
               >
-                <i className="material-icons right">Enter Chat</i>
+                <i className="material-icons right">Confirm</i>
               </button>
             </div>
           </div>
